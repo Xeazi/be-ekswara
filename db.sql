@@ -117,4 +117,6 @@ CREATE TABLE events_image (
 
     FOREIGN KEY (event_id) REFERENCES events(id)
         ON DELETE CASCADE
-)
+);
+
+-- insert
