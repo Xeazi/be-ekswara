@@ -54,8 +54,8 @@ CREATE TABLE admin (
 CREATE TABLE destinations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
-    location VARCHAR(50) NOT NULL,
-    park_hours VARCHAR NOT NULL,
+    location VARCHAR(50),
+    park_hours VARCHAR(15),
     about TEXT,
     history TEXT,
     facilities JSON, -- array (unordered list)
@@ -84,7 +84,7 @@ CREATE TABLE events (
 
     FOREIGN KEY (destination_id) REFERENCES destinations(id)
         ON DELETE CASCADE -- gapapa kayaknya karena gaada sistem riwayat + 1 admin acc manage 1 destination
-);
+);                        -- eh tapi transactionnya gpp??
 
 CREATE TABLE transactions (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -100,9 +100,21 @@ CREATE TABLE transactions (
 CREATE TABLE destinations_images (
     id INT PRIMARY KEY AUTO_INCREMENT,
     destination_id INT,
-    image_url VARCHAR(255),
+    name VARCHAR(255), -- url mengunakan ini mungkin?
+    image_url VARCHAR(255), -- perlu?
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
-   FOREIGN KEY (destination_id) REFERENCES destinations(id)
+    FOREIGN KEY (destination_id) REFERENCES destinations(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE events_image (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT,
+    name VARCHAR(255), -- url mengunakan ini mungkin?
+    image_url VARCHAR(255), -- perlu?
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (event_id) REFERENCES events(id)
+        ON DELETE CASCADE
+)
