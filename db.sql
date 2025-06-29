@@ -47,7 +47,7 @@ VALUES
 CREATE TABLE admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
-    password_hash VARCHAR()255 NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -60,13 +60,13 @@ CREATE TABLE destinations (
     history TEXT,
     facilities JSON, -- array (unordered list)
     visiting_info JSON, -- object(?) (address: string, transportation: [], openingHours: string)
-    duration_of_visit VARCHAR, -- atau semacam int
-    group_size VARCHAR, -- atau semacam int
-    ages VARCHAR, -- int min age, max age 
-    languages VARCHAR, -- atau json
-    map_url VARCHAR,
+    duration_of_visit VARCHAR(20), -- atau semacam int
+    group_size VARCHAR(20), -- atau semacam int
+    ages VARCHAR(20), -- int min age, max age 
+    languages JSON,
+    map_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE events (
@@ -120,3 +120,31 @@ CREATE TABLE events_image (
 );
 
 -- insert
+
+INSERT INTO destinations (
+  name, location, park_hours, about, history,
+  facilities, visiting_info, duration_of_visit, group_size,
+  ages, languages, map_url
+) VALUES (
+  'Taman Ismail Marzuki',
+  'Central Jakarta',
+  '08:00-17:00',
+  "Ismail Marzuki Park, commonly known as TIM, is a prominent center for arts, culture, and science located at Jalan Cikini Raya No. 73, Menteng, Central Jakarta. It was officially inaugurated on November 10, 1968, by Governor Ali Sadikin and was established on the former site of Taman Raden Saleh, which once housed Jakarta's zoo before it moved to Ragunan.",
+  'Named after the legendary Indonesian composer Ismail Marzuki, TIM was created as a space for creative expression and cultural development in Jakarta. It also serves as the home of the Jakarta Arts Council (Dewan Kesenian Jakarta), which plays a key role in supporting the local arts scene.',
+  
+  '["Teater Jakarta", "Jakarta Planetarium and Observatory", "Graha Bhakti Budaya", "Jakarta Public Library", "Cipta Galleries I, II, III", "Jakarta Institute of the Arts (IKJ)", "Prayer Room (Mushola) & Toilets"]',
+  
+  '{
+    "address": "Jalan Cikini Raya No. 73, Menteng, Central Jakarta.",
+    "transportation": ["Commuter Line: Cikini Station, followed by a short walk or ride.", "TransJakarta: Corridor 5H (Kampung Melayu-Tanah Abang) or 6H (Senen-Lebak Bulus).", "MRT: Bundaran HI Station, then continue via online ride-hailing service."],
+    "openingHours": "Daily, 08:00-17:00"
+  }',
+  
+  '2-3 Hours',
+  'Max. 15 people',
+  '18-50 years',
+  
+  '["Bahasa Indonesia", "English"]',
+  
+  'https://maps.google.com/?q=Taman+Wisata+Alam+Angke+Kapuk'
+);
