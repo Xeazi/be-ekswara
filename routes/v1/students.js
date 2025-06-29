@@ -4,6 +4,6 @@ const { createStudent, validationMiddleware, getStudents } = require("../../cont
 const router = express.Router();
 
 router.get("/students", getStudents);
-router.post("/student", validationMiddleware, createStudent);
+router.post("/students", validationMiddleware, createStudent);
 
 module.exports = router;
