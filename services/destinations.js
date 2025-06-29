@@ -2,10 +2,19 @@ const query = require("../database");
 
 async function getAllDestinations() {
     try {
-        const result = await query(
+        const rows = await query(
             `SELECT * FROM destinations`
         );
-        return result;        
+
+        const parsedRows = rows.map(destination => ({
+            ...destination,
+            facilities: JSON.parse(destination.facilities || '[]'),
+            visiting_info: JSON.parse(destination.visiting_info || '{}'),
+            languages: JSON.parse(destination.languages || '[]')
+        }));
+
+        return parsedRows;
+
     } catch (error) {
         throw(error);
     }
