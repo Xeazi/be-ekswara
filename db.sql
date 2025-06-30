@@ -124,7 +124,7 @@ CREATE TABLE events_image (
 INSERT INTO destinations (
   name, location, park_hours, about, history,
   facilities, visiting_info, duration_of_visit, group_size,
-  ages, languages, map_url
+  ages, languages, map_url, created_by
 ) VALUES (
   'Taman Ismail Marzuki',
   'Central Jakarta',
@@ -146,5 +146,13 @@ INSERT INTO destinations (
   
   '["Bahasa Indonesia", "English"]',
   
-  'https://maps.google.com/?q=Taman+Wisata+Alam+Angke+Kapuk'
+  'https://maps.google.com/?q=Taman+Wisata+Alam+Angke+Kapuk',
+  1
 );
+
+-- Insert data events, atur destination_id sama kaya punyamu, kalo di aku kubuat null semua
+INSERT INTO events (destination_id, status, name, description, date, time, price, category, created_by) VALUES
+(1, 'held', 'Pameran dan Workshop Seniman Lokal', 'Festival seni tahunan yang menampilkan karya seniman kontemporer indonesia dengan workshop langsung oleh para maestro seni.', '2025-05-08', '10:00-16:00', 68000.00, 'City Park', 1)
+
+INSERT INTO events_image (event_id, name, image_url) VALUES
+(1, 'Pameran Seni', 'https://placehold.co/270x270/EBF5FF/7F9CF5?text=Event');
