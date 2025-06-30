@@ -44,7 +44,7 @@ VALUES
 
 -- bukan tes:
 
-CREATE TABLE admin (
+CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -66,7 +66,11 @@ CREATE TABLE destinations (
     languages JSON,
     map_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+
+    FOREIGN KEY (created_by) REFERENCES admins(id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE events (
@@ -81,10 +85,15 @@ CREATE TABLE events (
     category VARCHAR(30),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+
 
     FOREIGN KEY (destination_id) REFERENCES destinations(id)
-        ON DELETE CASCADE -- gapapa kayaknya karena gaada sistem riwayat + 1 admin acc manage 1 destination
-);                        -- eh tapi transactionnya gpp??
+        ON DELETE SET NULL, -- gapapa kayaknya karena gaada sistem riwayat + 1 admin acc manage 1 destination
+                            -- eh tapi transactionnya gpp?? (catetan lagi 1 hari setelah: ku ganti set null aja)
+    FOREIGN KEY (created_by) REFERENCES admins(id) 
+        ON DELETE SET NULL 
+);                         
 
 CREATE TABLE transactions (
     id INT PRIMARY KEY AUTO_INCREMENT,
