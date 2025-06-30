@@ -87,7 +87,6 @@ CREATE TABLE events (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_by INT,
 
-
     FOREIGN KEY (destination_id) REFERENCES destinations(id)
         ON DELETE SET NULL, -- gapapa kayaknya karena gaada sistem riwayat + 1 admin acc manage 1 destination
                             -- eh tapi transactionnya gpp?? (catetan lagi 1 hari setelah: ku ganti set null aja)
