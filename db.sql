@@ -1,49 +1,3 @@
-
--- yg dari bang bil buat tes awal
-
-CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
-);
-
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone_number VARCHAR(20),
-    role_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (role_id) REFERENCES roles(id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE
-);
-
-INSERT INTO roles (name)
-VALUES 
-    ('student'),
-    ('admin'),
-    ('instructor');
-
-INSERT INTO students (firstname, lastname, email, phone_number, role_id)
-VALUES 
-    ('Alice', 'Tanaka', 'alice.tanaka@example.com', '081234567890', 1),
-    ('Bob', 'Kusuma', 'bob.kusuma@example.com', '089876543210', 1),
-    ('Daffa', 'Ghosan', 'ghosan.webdev@example.com', '08126942069', 2);
-
-CREATE TABLE json_test (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    content JSON
-);
-
-INSERT INTO json_test (content)
-VALUES
-    ('["Fast delivery", "24/7 support", "Secure payment"]'),
-    ('["Eco-friendly", "Reusable", "Made with recycled materials"]'),
-    ('["Free Wi-Fi", "Air conditioning", "Pet-friendly"]');
-
--- bukan tes:
-
 CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
@@ -129,6 +83,9 @@ CREATE TABLE events_image (
 
 -- insert
 
+INSERT INTO admins (username, password_hash) VALUES
+('daffa', '123'); -- contoh hash password
+
 INSERT INTO destinations (
   name, location, park_hours, about, history,
   facilities, visiting_info, duration_of_visit, group_size,
@@ -160,7 +117,7 @@ INSERT INTO destinations (
 
 -- Insert data events, atur destination_id sama kaya punyamu, kalo di aku kubuat null semua
 INSERT INTO events (destination_id, status, name, description, date, time, price, category, created_by) VALUES
-(1, 'held', 'Pameran dan Workshop Seniman Lokal', 'Festival seni tahunan yang menampilkan karya seniman kontemporer indonesia dengan workshop langsung oleh para maestro seni.', '2025-05-08', '10:00-16:00', 68000.00, 'City Park', 1)
+(1, 'held', 'Pameran dan Workshop Seniman Lokal', 'Festival seni tahunan yang menampilkan karya seniman kontemporer indonesia dengan workshop langsung oleh para maestro seni.', '2025-05-08', '10:00-16:00', 68000.00, 'City Park', 1);
 
 INSERT INTO events_image (event_id, name, image_url) VALUES
 (1, 'Pameran Seni', 'https://placehold.co/270x270/EBF5FF/7F9CF5?text=Event');

@@ -13,6 +13,7 @@ var corsOptions = {
     optionsSuccessStatus: 200
 }
 
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // this is API endpoint
