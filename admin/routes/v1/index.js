@@ -3,6 +3,8 @@ const passport = require("passport");
 
 const authRouter = require("./auth")
 // const uploadRouter = require("./upload");
+const destinationsRouter = require("./destinations");
+const eventsRouter = require("./events");
 
 const router = express.Router();
 const apiVersion = "/v1";
@@ -11,16 +13,10 @@ const apiVersion = "/v1";
 router.use(apiVersion, authRouter);
 
 // private api
-// apply passport validation to all routes where that routes bellow this routes (???)
-// cara 1
-router.use(passport.authenticate('jwt-admin', { session: false }), (req, res, next) => {
-    console.log('Authenticated');
-    next();
-});
+router.use(apiVersion, passport.authenticate('jwt-admin', { session: false }), eventsRouter);
+router.use(apiVersion, passport.authenticate('jwt-admin', { session: false }), destinationsRouter);
 
-// cara 2
-// router.use(apiVersion, passport.authenticate('jwt', { session: false }), uploadRouter);
-
-// router.use(apiVersion, uploadRouter);
+// router.use(apiVersion, destinationsRouter);
+// router.use(apiVersion, eventsRouter);
 
 module.exports = router;
