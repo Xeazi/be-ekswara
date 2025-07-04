@@ -2,6 +2,7 @@ const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const privateKey = require("../utils/privateKey");
+const authServices = require("../admin/services/auth")
 
 /*
 
@@ -23,14 +24,14 @@ passport.use('jwt-admin', new JwtStrategy(
             // data sudah nemu
             // di cari di mysql
 
-            const userData = {
-                fname: 'John',
-                lname: 'Doe',
-                email: 'example@doe.com',
-            };
+            const initialData = await authServices.getAdmin(payload.username);
 
-            if(payload.email === userData.email && payload.email === userData.email) {
-                return done(null, userData);
+            const data = initialData[0];
+
+            console.log(data.username +'HALP');
+
+            if(payload.username === data.username) {
+                return done(null, data);
             } else {
                 return done(null, false);
             }

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const authServices = require("../services/auth")
 const privateKey = require('../../utils/privateKey')
 
 /* di postman, key ini dimasukkin di Authorization sebelah Headers, di dalem Bearer Token */
@@ -15,22 +16,20 @@ abis ini baru ke passport.js
 */
 
 async function login(req, res) {
-    const {email, password} = req.body;
+    const {username, password} = req.body;
 
-    if (email === undefined || email === '' || password === undefined || password === '') {
-        return res.status(400).json('Email and password are required')
+    if (username === undefined || username === '' || password === undefined || password === '') {
+        return res.status(400).json('Username and password are required')
     }
 
     try {
         // simulasi sederhana login
 
-        //database dummy
-        const userData = {
-            fname: 'John',
-            lname: 'Doe',
-            email: 'example@doe.com',
-            password: '$2b$10$qZ3KVy8mcxoViyGBlU01Ne.5uAg8q2mtoK5yIWcKCOyVrgPvrQ.Sm' // 1234
-        };
+        //database beneran
+
+        const initialData = await authServices.getAdmin(username);
+
+        const data = initialData[0];
 
         // malahan seharusnya engga pake attribut user(?)
 
@@ -40,28 +39,23 @@ async function login(req, res) {
         // const hashPassword = await bcrypt.hash(userData.password, 10);
         // console.log(hashPassword);
 
-        if (email !== userData.email) {
-            return res.status(401).json('User not exists');
+        if (username !== data.username) {
+            return res.status(401).json('Invalid Username.');
         }
-
-        const isPasswordValid = await bcrypt.compare(password, userData.password);
+        
+        const isPasswordValid = await bcrypt.compare(password, data.password_hash);
+        
         if (!isPasswordValid) {
-            return res.status(400).json('Invalid password or email!')
+            return res.status(400).json('Invalid password.')
         }
-
-        console.log('in here');
-
-        // cek apakah email dan password benar atau salah
 
         // generate token
         const token = jwt.sign(
             {
-                email: userData.email,
-                fname: userData.fname,
-                lname: userData.lname,
+                username: data.username
             }, 
             // process.env.JWT_SECRET
-            privateKey // , {}
+            privateKey, {expiresIn: '2h'}
         );
 
         return res.status(200).json({ token });
@@ -69,7 +63,6 @@ async function login(req, res) {
     } catch (error) {
         return res.status(400).json(error.message ?? 'Something went wrong.');        
     }
-
 
 }
 
