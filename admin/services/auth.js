@@ -1,11 +1,12 @@
 const query = require("../../database");
 
 async function getAllAdmins() {
+    
     try {
         const result = await query(
             `SELECT username, password_hash FROM admins`
         );
-        console.log(result); // hapus
+
         return result;
 
     } catch (error) {
@@ -14,7 +15,7 @@ async function getAllAdmins() {
 }
 
 async function getAdmin(username) {
-    console.log(username);
+
     try {
         const result = await query(
             `SELECT username, password_hash FROM admins
@@ -23,7 +24,7 @@ async function getAdmin(username) {
             `, 
             [username]
         );
-        console.log(result); // hapus
+
         return result;
 
     } catch (error) {

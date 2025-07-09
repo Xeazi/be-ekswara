@@ -24,6 +24,9 @@ app.get('/', (req, res) => {
 app.use(routes);
 app.use(routesAdmin);
 
+app.use('/images', express.static('images'));
+app.use('/images_destinations', express.static('images_destinations'));
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
