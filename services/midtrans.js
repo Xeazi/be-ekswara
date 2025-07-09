@@ -181,8 +181,68 @@ const createTransactionToken = async ({
   }
 };
 
+/**
+ * Get status of transaction that already recorded on Midtrans
+ * @param {string} orderId - Order ID or Transaction ID
+ * @returns {Promise<object>} - Transaction status response
+ */
+const getTransactionStatus = async (orderId) => {
+  try {
+    console.log("Getting transaction status for order:", orderId);
+
+    const url = `https://api.sandbox.midtrans.com/v2/${orderId}/status`;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Basic ${Buffer.from(
+          process.env.MIDTRANS_SERVER_KEY + ":"
+        ).toString("base64")}`,
+      },
+    };
+
+    const response = await fetch(url, options);
+    const json = await response.json();
+
+    console.log("Transaction status response:", json);
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${json.status_message || "Unknown error"}`
+      );
+    }
+
+    return json;
+  } catch (error) {
+    console.error("Error getting transaction status:", error);
+    throw error;
+  }
+};
+
+/**
+ * Approve a credit card transaction with 'challenge' fraud status
+ * @param {string} orderId - Order ID or Transaction ID
+ * @returns {Promise<object>} - Approval response
+ */
+const approveTransaction = async (orderId) => {
+  try {
+    console.log("Approving transaction for order:", orderId);
+
+    const response = await snap.transaction.approve(orderId);
+
+    console.log("Transaction approval response:", response);
+
+    return response;
+  } catch (error) {
+    console.error("Error approving transaction:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   createTransaction,
   createTransactionToken,
   simulateTransaction,
+  getTransactionStatus,
+  approveTransaction,
 };
