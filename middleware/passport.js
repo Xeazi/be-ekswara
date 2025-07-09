@@ -18,7 +18,7 @@ passport.use('jwt-admin', new JwtStrategy(
         secretOrKey: privateKey,
     }, 
     async (payload, done) => {
-        console.log(payload);
+        
         try {
             
             // data sudah nemu
@@ -27,8 +27,6 @@ passport.use('jwt-admin', new JwtStrategy(
             const initialData = await authServices.getAdmin(payload.username);
 
             const data = initialData[0];
-
-            console.log(data.username +'HALP');
 
             if(payload.username === data.username) {
                 return done(null, data);

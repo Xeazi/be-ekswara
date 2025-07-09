@@ -31,6 +31,8 @@ async function createAdminEvent(req, res) {
         price, 
         category
     } = req.body;
+
+    const image_url = `/images/${destinationId}/${req.file.filename}`;
     
     try {
         const data = await eventsServices.createAdminEvent(username, destinationId, {
@@ -40,7 +42,8 @@ async function createAdminEvent(req, res) {
             date, 
             time, 
             price, 
-            category
+            category,
+            image_url
         });
 
         return res.status(200).json(data);     
@@ -52,6 +55,8 @@ async function createAdminEvent(req, res) {
 async function updateAdminEvent(req, res) {
     const username = req.user.username;
 
+    const destinationId = req.params.destinationId;
+    
     const eventId = req.params.eventId;
 
     const {
@@ -63,16 +68,23 @@ async function updateAdminEvent(req, res) {
         price, 
         category
     } = req.body;
+
+    let image_url = null;
+
+    if (req.file) {
+        image_url = `/images/${destinationId}/${req.file.filename}`;
+    }
     
     try {
-        const data = await eventsServices.deleteAdminEvent(username, eventId, {
+        const data = await eventsServices.updateAdminEvent(username, eventId, {
             status, 
             name, 
             description, 
             date, 
             time, 
             price, 
-            category
+            category,
+            image_url
         });
 
         return res.status(200).json(data);     
@@ -87,9 +99,9 @@ async function deleteAdminEvent(req, res) {
     const eventId = req.params.eventId;
     
     try {
-        const data = await eventsServices.getAdminDestinationEvents(username, eventId);
+        const data = await eventsServices.deleteAdminEvent(username, eventId);
 
-        return res.status(200).json(data);     
+        return res.status(200).json({message: 'Event was deleted successfully.'});     
     } catch (error) {
         return res.status(400).json(error.message ?? "Something went wrong!");
     }

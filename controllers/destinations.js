@@ -12,6 +12,18 @@ async function getAllDestinations(req, res) {
     }
 }
 
+async function getDestinationDetail(req, res) {
+    try {
+        const data = await destinationsServices.getDestinationDetail(req.params.destinationId);
+
+        return res.status(200).json(data);
+
+    } catch (error) {
+        return res.status(400).json(error.message ?? "Something went wrong!");        
+    }
+}
+
 module.exports = {
-    getAllDestinations
+    getAllDestinations,
+    getDestinationDetail
 }

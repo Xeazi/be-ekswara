@@ -2,7 +2,7 @@ const query = require("../../database");
 
 async function getAdminDestinations(username) {
     try {
-        const result = await query(
+        const rows = await query(
             `SELECT 
                 id, name, location, park_hours, about, history, facilities, visiting_info, 
                 duration_of_visit, group_size, ages, languages, map_url
@@ -15,7 +15,14 @@ async function getAdminDestinations(username) {
             `, [username]
         );
 
-        return result;
+        const parsedRows = rows.map(destination => ({
+            ...destination,
+            facilities: JSON.parse(destination.facilities || '[]'),
+            visiting_info: JSON.parse(destination.visiting_info || '{}'),
+            languages: JSON.parse(destination.languages || '[]'),
+        }));
+
+        return parsedRows;
 
     } catch (error) {
         throw error;
@@ -28,7 +35,7 @@ async function updateAdminDestination(username, destinationId, {
     ages = '', languages = [], map_url = ''
 }) {
     try {
-        const result = await query(
+        const rows = await query(
             `UPDATE destinations 
                 name = ?, location = ?, park_hours = ?, about = ?, history = ?, facilities = ?, visiting_info = ?, 
                 duration_of_visit = ?, group_size = ?, ages = ?, languages = ?, map_url = ?
@@ -44,7 +51,7 @@ async function updateAdminDestination(username, destinationId, {
                 destinationId, username]
         );
 
-        return result;
+        return rows;
 
     } catch (error) {
         throw error;
@@ -53,7 +60,7 @@ async function updateAdminDestination(username, destinationId, {
 
 async function deleteAdminDestination(username, destinationId) {
     try {
-        const result = await query(
+        const rows = await query(
             `DELETE FROM 
                 destinations
             WHERE
@@ -66,7 +73,7 @@ async function deleteAdminDestination(username, destinationId) {
             `, [destinationId, username]
         );
 
-        return result;
+        return rows;
 
     } catch (error) {
         throw error;

@@ -6,11 +6,15 @@ const authRouter = require("./auth")
 const destinationsRouter = require("./destinations");
 const eventsRouter = require("./events");
 
+const testRouter = require("./test");
+
 const router = express.Router();
 const apiVersion = "/v1";
 
 // public api
 router.use(apiVersion, authRouter);
+
+router.use(apiVersion, passport.authenticate('jwt-admin', { session: false }), testRouter);
 
 // private api
 router.use(apiVersion, passport.authenticate('jwt-admin', { session: false }), eventsRouter);

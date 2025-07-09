@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 async function hash()     
 {
-    const password = '1234';
+    const password = 'herlo';
 
     const saltPassword = await bcrypt.genSalt(10)
     console.log(saltPassword);
