@@ -9,7 +9,28 @@ async function getAllEvents(req, res) {
   }
 }
 
+async function getEventById(req, res) {
+  try {
+    const { id } = req.params;
+    const data = await eventsServices.getEventById(id);
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(400).json(error.message ?? "Something went wrong!");
+  }
+}
+
+async function getEventsByDestination(req, res) {
+  try {
+    const { destinationId } = req.params;
+    const data = await eventsServices.getEventsByDestination(destinationId);
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(400).json(error.message ?? "Something went wrong!");
+  }
+}
 
 module.exports = {
-  getAllEvents
+  getAllEvents,
+  getEventById,
+  getEventsByDestination,
 };

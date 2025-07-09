@@ -1,21 +1,21 @@
 const express = require("express");
 
-const todosRouter = require("./todos")
-const studentRouter = require("./students")
-const uploadRouter = require("./upload")
+const todosRouter = require("./todos");
+const studentRouter = require("./students");
+const uploadRouter = require("./upload");
 
-const destinationsRouter = require("./destinations")
-const eventsRouter = require("./events")
+const destinationsRouter = require("./destinations");
+const eventsRouter = require("./events");
+const paymentsRouter = require("./payments");
 
 const router = express.Router();
-const apiVersion = "/v1";
 
-router.use(apiVersion, todosRouter);
-router.use(apiVersion, studentRouter);
-router.use(apiVersion, uploadRouter);
+router.use(todosRouter);
+router.use(studentRouter);
+router.use(uploadRouter);
 
-router.use(apiVersion, destinationsRouter);
-router.use(apiVersion, eventsRouter);
-
+router.use(destinationsRouter);
+router.use(eventsRouter);
+router.use(paymentsRouter);
 
 module.exports = router;
