@@ -22,7 +22,7 @@ const createInvoice = async (req, res) => {
     // Kirim kembali URL invoice ke frontend
     res.status(201).json({ invoiceURL: invoice.invoice_url, id: invoice.id });
   } catch (error) {
-    console.error("Error creating Xendit invoice:", error);
+    console.error("Error creating Midtrans invoice:", error);
     res
       .status(500)
       .json({ message: "Failed to create invoice", error: error.message });
